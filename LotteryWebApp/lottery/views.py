@@ -73,7 +73,7 @@ def view_draws():
 @lottery_blueprint.route('/check_draws', methods=['POST'])
 @requires_roles('user')
 def check_draws():
-    # palyed draws query the database for draws that have been played by the current user
+    # played draws query the database for draws that have been played by the current user
     played_draws = Draw.query.filter_by(been_played=True, user_id=current_user.id).all()
 
     # if played draws exist
