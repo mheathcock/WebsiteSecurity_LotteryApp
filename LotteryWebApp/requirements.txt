@@ -1,0 +1,13 @@
+Flask
+flask_sqlalchemy
+flask_login
+flask_wtf
+WTForms
+email_validator
+cryptography
+python-dotenv
+bcrypt
+pyotp
+Flask-Talisman
+SQLAlchemy
+MarkupSafe

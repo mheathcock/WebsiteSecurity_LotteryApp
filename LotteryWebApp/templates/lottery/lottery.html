@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <script type="text/javascript" src="{{ url_for('static', filename='rng.js') }}"></script>
+    <h3 class="title is-3">
+        Lottery
+    </h3>
+    <div class="column is-8 is-offset-2">
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="notification is-danger">
+                    {{ messages[0] }}
+                </div>
+            {% endif %}
+        {% endwith %}
+        <h4 class="title is-4">Create Draw</h4>
+        <div class="box">
+
+            <form method="POST" action="/add_draw">
+                <div class="columns is-multiline is-centered">
+                    <div class="column is-one-sixth">
+                        <input class="input" type="number" name="no1" id="no1" placeholder="value 1" min="1" max="60">
+                    </div>
+                    <div class="column is-one-sixth">
+                        <input class="input" type="number" name="no2" id="no2" placeholder="value 2" min="1" max="60">
+                    </div>
+                    <div class="column is-one-sixth">
+                        <input class="input" type="number" name="no3" id="no3" placeholder="value 3" min="1" max="60">
+                    </div>
+                    <div class="column is-one-sixth">
+                        <input class="input" type="number" name="no4" id="no4" placeholder="value 4" min="1" max="60">
+                    </div>
+                    <div class="column is-one-sixth">
+                        <input class="input" type="number" name="no5" id="no5" placeholder="value 5" min="1" max="60">
+                    </div>
+                    <div class="column is-one-sixth">
+                        <input class="input" type="number" name="no6" id="no6" placeholder="value 6" min="1" max="60">
+                    </div>
+                </div>
+                <div class="field">
+                    <button type="button" class="button is-info is-centered" onclick="luckyDip()">Lucky
+                        Dip
+                    </button>
+                </div>
+                <div class="field">
+                    <button class="button is-info is-centered">Submit Draw</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="column is-4 is-offset-4">
+        <h4 class="title is-4">Playable Draws</h4>
+        <div class="box">
+            {% if playable_draws %}
+                <div class="field">
+
+                    {# render playable draws #}
+                    {% for draw in playable_draws %}
+                        <p>{{ draw.numbers }}</p>
+                    {% endfor %}
+
+                </div>
+            {% endif %}
+            <form method="POST" action="/view_draws">
+                <div>
+                    <button class="button is-info is-centered">View Playable Draws</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="column is-6 is-offset-3">
+        <h4 class="title is-4">Play Lottery</h4>
+        <div class="box">
+            {% if results %}
+                <div class="field">
+                    <table class="table">
+                        <tr>
+                            <th>Round</th>
+                            <th>Draw</th>
+                            <th>Played</th>
+                            <th>Match</th>
+                        </tr>
+
+                        {# render results #}
+                        {% for draw in results %}
+                            <tr>
+                                <td>{{ draw.lottery_round }}</td>
+                                <td>{{ draw.numbers }}</td>
+                                <td>{{ draw.been_played }}</td>
+                                {% if draw.matches_master %}
+                                    <td style="background-color: yellow">{{ draw.matches_master }}</td>
+                                {% else %}
+                                    <td>{{ draw.matches_master }}</td>
+                                {% endif %}
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            {% endif %}
+
+            {# render check result button if current lottery round not played #}
+            {% if not played %}
+                <form method="POST" action="/check_draws">
+                    <div>
+                        <button class="button is-info is-centered">Check Result</button>
+                    </div>
+                </form>
+            {% else %}
+                {# render play again button if current lottery round has been played #}
+                <form method="POST" action="/play_again">
+                    <div>
+                        <button class="button is-info is-centered">Play Again</button>
+                    </div>
+                </form>
+            {% endif %}
+        </div>
+    </div>
+
+{% endblock %}

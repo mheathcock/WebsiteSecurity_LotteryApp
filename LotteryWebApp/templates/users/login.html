@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <h3 class="title is-3">Login</h3>
+ <div class="box">
+  {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <div class="notification is-danger">
+                        {{ messages[0] }}. Go to <a href="{{ url_for('users.login') }}">login page</a>.
+
+                    </div>
+                {% endif %}
+            {% endwith %}
+    {%  if form %}
+     <form method="POST">
+        <div class="field">
+            {{ form.csrf_token() }}
+            <div class="control">
+                {{ form.username(class="input", placeholder="Email") }}
+                {% for error in form.username.errors %}
+                    {{ error }}
+                {% endfor %}
+            </div>
+        </div>
+        <div class="field">
+            <div class="control">
+                {{ form.password(class="input", placeholder="Password") }}
+            </div>
+        </div>
+        <div class="field">
+            <div class="control">
+                {{ form.pin(class="input", placeholder="PIN") }}
+            </div>
+        </div>
+     <div>
+        {{ form.recaptcha }}
+    </div>
+         <div>
+        {{ form.submit(class="button is-info is-centered") }}
+        </div>
+</form>
+ {% endif %}
+        </div>
+{% endblock %}

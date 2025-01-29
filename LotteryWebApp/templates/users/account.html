@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="column is-6 is-offset-3">
+    <h3 class="title">Your Account</h3>
+    <div class="box">
+        <table class="table">
+        <tbody>
+            <tr>
+                <th>Account No.</th>
+                <th>{{ acc_no }}</th>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <th>{{ email }}</th>
+            </tr>
+            <tr>
+                <th>First Name</th>
+                <th>{{ firstname }}</th>
+            </tr>
+            <tr>
+                <th>Last Name</th>
+                <th>{{ lastname }}</th>
+            </tr>
+            <tr>
+                <th>Phone No.</th>
+                <th>{{ phone }}</th>
+            </tr>
+        </tbody>
+        </table>
+    </div>
+</div>
+
+
+{% endblock %}

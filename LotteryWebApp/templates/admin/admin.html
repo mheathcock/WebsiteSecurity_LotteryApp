@@ -1,0 +1,156 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <script type="text/javascript" src="{{ url_for('static', filename='rng.js') }}"></script>
+    <h3 class="title is-3">Lottery Web Application Admin
+    </h3>
+    <h4 class="subtitle is-4">
+        Welcome, {{ name }}
+    </h4>
+
+    <div class="column is-10 is-offset-1">
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="notification is-danger">
+                    {{ messages[0] }}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+
+        <h4 class="title is-4">Current Users</h4>
+        <div class="box">
+            {% if current_users %}
+                <div class="field">
+                    <table class="table">
+                        <tr>
+                            <th>ID</th>
+                            <th>Email</th>
+                            <th>Firstname</th>
+                            <th>Lastname</th>
+                            <th>Phone No.</th>
+                            <th>Role</th>
+                              <th>Registered</th>
+                            <th>Logged In</th>
+                        </tr>
+                        {% for user in current_users %}
+                            <tr>
+                                <td>{{ user.id }}</td>
+                                <td>{{ user.email }}</td>
+                                <td>{{ user.firstname }}</td>
+                                <td>{{ user.lastname }}</td>
+                                <td>{{ user.phone }}</td>
+                                <td>{{ user.role }}</td>
+                              <td>{{ user.registered_on.strftime('%d/%m/%Y %H:%M:%S') }}</td>
+                                {% if user.current_login %}
+                                    <td>{{ user.current_login.strftime('%d/%m/%Y %H:%M:%S') }}</td>
+                                {% else %}
+                                    <td>Not yet logged in</td>
+                                {% endif %}
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            {% endif %}
+            <form method="POST" action="/view_all_users">
+                <div>
+                    <button class="button is-info is-centered">View All Users</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="column is-8 is-offset-2">
+        <h4 class="title is-4">Create Winning Draw</h4>
+        <div class="box">
+            <form method="POST" action="/create_winning_draw">
+                <div class="columns is-multiline is-centered">
+                    <div class="column is-one-sixth">
+                        <input class="input" type="number" name="no1" id="no1" placeholder="value 1">
+                    </div>
+                    <div class="column is-one-sixth">
+                        <input class="input" type="number" name="no2" id="no2" placeholder="value 2">
+                    </div>
+                    <div class="column is-one-sixth">
+                        <input class="input" type="number" name="no3" id="no3" placeholder="value 3">
+                    </div>
+                    <div class="column is-one-sixth">
+                        <input class="input" type="number" name="no4" id="no4" placeholder="value 4">
+                    </div>
+                    <div class="column is-one-sixth">
+                        <input class="input" type="number" name="no5" id="no5" placeholder="value 5">
+                    </div>
+                    <div class="column is-one-sixth">
+                        <input class="input" type="number" name="no6" id="no6" placeholder="value 6">
+                    </div>
+                </div>
+                <div class="field">
+                    <button type="button" class="button is-info is-centered" onclick="luckyDip()">Lucky
+                        Dip
+                    </button>
+                </div>
+                <div>
+                    <button class="button is-info is-centered">Submit Winning Draw</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+    <div class="column is-4 is-offset-4">
+        <h4 class="title is-4">Current Winning Draw</h4>
+        <div class="box">
+            {% if winning_draw %}
+                <div class="field">
+                    <p>Round {{ winning_draw.lottery_round }}</p>
+                    <p>{{ winning_draw.numbers }}</p>
+                </div>
+            {% endif %}
+            <form method="POST" action="/view_winning_draw">
+                <div>
+                    <button class="button is-info is-centered">View Winning Draw</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="column is-8 is-offset-2">
+        <h4 class="title is-4">Run Lottery</h4>
+        <div class="box">
+            {% if results %}
+                <div class="field">
+                    {% for result in results %}
+                        <p>{{ result }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            <form method="POST" action="/run_lottery">
+                <div>
+                    <button class="button is-info is-centered">View Winners</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="column is-8 is-offset-2" id="test">
+        <h4 class="title is-4">Security Logs</h4>
+        <div class="box">
+            {% if logs %}
+                <div class="field">
+                <table class="table">
+                    <tr>
+                        <th>Last 10 Security Log Entries</th>
+                    </tr>
+                    {% for entry in logs %}
+                        <tr>
+                            <td>{{ entry }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            {% endif %}
+            <form method="POST" action="/logs">
+                <div>
+                    <button class="button is-info is-centered">View Logs</button>
+                </div>
+            </form>
+            </div>
+        </div>
+
+
+{% endblock %}
